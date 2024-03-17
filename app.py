@@ -1,3 +1,4 @@
+import webbrowser
 import os
 
 from flask import Flask, render_template, request, redirect, url_for, flash
@@ -59,4 +60,6 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.secret_key = 'super_secret_key'
+    webbrowser.open('http://127.0.0.1:5000')
     app.run(debug=False)
+    
