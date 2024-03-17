@@ -5,13 +5,8 @@ from app import Face
 
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-# Attempt to open the camera
 cap = cv2.VideoCapture(0)
-if not cap.isOpened():
-    print("Error: Unable to open camera.")
-    exit()
 
-# Load stored faces
 with app.app_context():
     stored_faces = Face.query.all()
     stored_face_gray_list = []
@@ -20,12 +15,20 @@ with app.app_context():
         stored_image = cv2.imread(stored_face.image_path, cv2.IMREAD_GRAYSCALE)
         stored_face_gray_list.append(cv2.resize(stored_image, (100, 100)))  # Resize for consistency
 
+
+window_closed = False
+
+def on_window_close(event, x, y, flags, param):
+    global window_closed
+    if event == cv2.EVENT_LBUTTONDOWN:
+        window_closed = True
+
+
+cv2.namedWindow('Face Recognition')
+cv2.setMouseCallback('Face Recognition', on_window_close)
+
 while True:
     ret, frame = cap.read()
-    if not ret:
-        print("Error: Failed to capture frame.")
-        break
-
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
 
@@ -49,10 +52,14 @@ while True:
 
     cv2.imshow('Face Recognition', frame)
 
+
+    if window_closed:
+        break
+
     key = cv2.waitKey(1)
     if key == ord('q') or key == 27:  # Press 'q' or Esc to exit
         break
 
-# Release the camera and close all OpenCV windows
+
 cap.release()
 cv2.destroyAllWindows()
