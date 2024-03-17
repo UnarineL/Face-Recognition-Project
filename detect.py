@@ -5,8 +5,13 @@ from app import Face
 
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
+# Attempt to open the camera
 cap = cv2.VideoCapture(0)
+if not cap.isOpened():
+    print("Error: Unable to open camera.")
+    exit()
 
+# Load stored faces
 with app.app_context():
     stored_faces = Face.query.all()
     stored_face_gray_list = []
@@ -17,6 +22,10 @@ with app.app_context():
 
 while True:
     ret, frame = cap.read()
+    if not ret:
+        print("Error: Failed to capture frame.")
+        break
+
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
 
@@ -44,5 +53,6 @@ while True:
     if key == ord('q') or key == 27:  # Press 'q' or Esc to exit
         break
 
+# Release the camera and close all OpenCV windows
 cap.release()
 cv2.destroyAllWindows()
