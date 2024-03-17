@@ -14,7 +14,7 @@ OpenCV
 Clone or download the Face Recognition App repository from GitHub.
 bash
 Copy code
-git clone https://github.com/yourusername/FaceRecognitionApp.git
+git clone https://github.com/unarinel/Face-Recognition-Project.git
 Install the required Python packages using pip.
 bash
 Copy code
