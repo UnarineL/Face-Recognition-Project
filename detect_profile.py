@@ -134,7 +134,3 @@ if not is_streamlit_running():
     command = ["streamlit", "run", streamlit_script_path]
     subprocess.run(command)
 
-
-    cap.release()
-    cv2.destroyAllWindows()
-"""
