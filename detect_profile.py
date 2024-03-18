@@ -131,7 +131,7 @@ def is_streamlit_running():
     return False
 
 if not is_streamlit_running():
-    streamlit_script_path = "c:/Users/unari/Desktop/Face Recognition Project/detect_profile.py"
+    streamlit_script_path = "detect_profile.py"
     command = ["streamlit", "run", streamlit_script_path]
     subprocess.run(command)
 
